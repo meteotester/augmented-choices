@@ -31,6 +31,48 @@ def getChoices():
     return jsonify(jsonStr)
 
 
+@app.route("/placetoeat")
+def getPlacetoeat():
+
+    try:
+        lat=40.465511
+        lng=-3.618767
+        if (request.args['lat']):
+            lat = request.args['lat']
+        if (request.args['lng']):
+            lng = request.args['lng']
+
+        myfilter = "&category_group=eat"
+        experiencesList = []
+        url ="http://papi.minube.com/pois?lang=es&city_id=1252&latitude=%s&longitude=%s&order_by=score&max_distance=1000&api_key=%s%s" %(lat,lng,api_key,myfilter)
+        print url
+        r = requests.get(url)
+
+        if (len(r.json()) == 0):
+            url ="http://papi.minube.com/pois?lang=es&city_id=1252&latitude=%s&longitude=%s&order_by=score&api_key=%s%s" %(lat,lng,api_key,myfilter)
+            print url
+            r = requests.get(url)
+
+        myjson = r.json()
+
+        # Len 5 fixes bug with id 0
+        for i in range(min(5,len(myjson))):
+            empDict = selectFields(myjson[i])
+
+            # Exclude blacklist
+            if (empDict["id"]) not in [0]:
+                experiencesList.append(empDict)
+
+        print(experiencesList)
+
+        # convert to json data
+        jsonStr = json.dumps(experiencesList[0])
+
+    except Exception ,e:
+        print str(e)
+
+    return jsonify(jsonStr)
+
 @app.route("/experience")
 def getExperience():
 

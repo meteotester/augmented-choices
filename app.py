@@ -15,7 +15,7 @@ subcategories_dict = {x["id"]:x["name"] for x in subcategories}
 
 def selectFields(mydict):
     mydict["subcategory"] = subcategories_dict[mydict["subcategory_id"]]
-    mydict = {k:mydict[k] for k in ('name','distance', 'subcategory', 'picture_url') if k in mydict}
+    mydict = {k:mydict[k] for k in ('id', 'name','distance', 'subcategory', 'picture_url') if k in mydict}
     return mydict
 
 
@@ -44,17 +44,40 @@ def getExperience():
             lng = request.args['lng']
         if (request.args['choice']):
             choice = request.args['choice']
+
+        subcategory = ""
+        if choice == "symbols":
+            #Statues
+            subcategory = "&subcategory_id=16"
+        if choice == "family":
+            #Exhibitions
+            subcategory = "&subcategory_id=82"
+        if choice == "nightlife":
+            #Nightclubs
+            subcategory = "&subcategory_id=39"
+        if choice == "children":
+            #Sports-Related
+            subcategory = "&subcategory_id=87"
+
+
         experiencesList = []
-        url ="http://papi.minube.com/pois?lang=en&latitude=%s&longitude=%s&max_distance=500&order_by=distance&api_key=%s" %(lat,lng,api_key)
+        url ="http://papi.minube.com/pois?lang=es&city_id=1252&latitude=%s&longitude=%s&order_by=score&max_distance=1000&api_key=%s%s" %(lat,lng,api_key,subcategory)
         print url
         r = requests.get(url)
+        if (len(r.json()) == 0):
+            url ="http://papi.minube.com/pois?lang=es&city_id=1252&latitude=%s&longitude=%s&order_by=score&api_key=%s%s" %(lat,lng,api_key,subcategory)
+            print url
+            r = requests.get(url)
 
+        myjson = r.json()
         # fill choices list
-        for i in range(0,1):
-            empDict = selectFields(r.json()[i])
-            experiencesList.append(empDict)
+        for i in range(len(myjson)):
+            empDict = selectFields(myjson[i])
+            if (empDict["id"]) not in ["25128", "3707046", "2198"]:
+                experiencesList.append(empDict)
 
-        print experiencesList
+        print(experiencesList)
+
         # convert to json data
         jsonStr = json.dumps(experiencesList[0])
 

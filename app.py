@@ -1,11 +1,14 @@
 #!/usr/bin/python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 from flask import Flask,jsonify,json
 from flask import request
 import requests
 import os
 from jsonpath_rw import jsonpath, parse
-
+import sys
+if sys.version[0] == '2':
+    reload(sys)
+    sys.setdefaultencoding("utf-8")
 
 app = Flask(__name__)
 api_key = os.environ['API_KEY_MINUBE']
@@ -14,7 +17,11 @@ subcategories = json.load(open('data/subcategories.json'))
 subcategories_dict = {x["id"]:x["name"] for x in subcategories}
 
 def selectFields(mydict):
+    import unidecode
+
     mydict["subcategory"] = subcategories_dict[mydict["subcategory_id"]]
+    mydict["name"] = unidecode.unidecode(mydict["name"])
+
     mydict = {k:mydict[k] for k in ('id', 'name','distance', 'subcategory', 'picture_url') if k in mydict}
     return mydict
 
@@ -23,9 +30,9 @@ def selectFields(mydict):
 @app.route('/choices')
 def getChoices():
     if (int(request.args['profile']) > 0):
-        choicesList = [{'name': 'children', 'text': 'Cosas de niños'}, {'name':'family', 'text': 'Para toda la familia'}]
+        choicesList = [{'name': 'children', 'text': 'Cosas de chavales'}, {'name':'family', 'text': 'Para toda la familia'}]
     else:
-        choicesList = [{'name': 'nightlife', 'text': 'Ajetreo hasta el amanecer'}, {'name':'symbols', 'text': 'Símbolos de la ciudad'}]
+        choicesList = [{'name': 'nightlife', 'text': 'Ajetreo hasta el amanecer'}, {'name':'symbols', 'text': 'Simbolos de la ciudad'}]
     print choicesList
     jsonStr = json.dumps(choicesList)
     return jsonify(jsonStr)
@@ -129,4 +136,4 @@ def getExperience():
     return jsonify(jsonStr)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')

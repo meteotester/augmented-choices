@@ -17,6 +17,9 @@ public class controlsScript : MonoBehaviour {
 
 	public CanvasGroup mainCanvas;
 	public CanvasGroup selectPlaceCanvas;
+	public CanvasGroup selectAnothrePlace;
+	public CanvasGroup SelectDateCanvas;
+	public CanvasGroup SelectHotelCanvas;
 
 	public Text choice1Text;
 	public Text choice2Text;
@@ -89,6 +92,18 @@ public class controlsScript : MonoBehaviour {
 		StartCoroutine("selectPlaceFadeOut");
 		StartCoroutine (changeChoices());
 	}
+	public void fadeselectAnotherPlaceMenu(){
+		StartCoroutine("selectAnotherPlaceFadeOut");
+		//StartCoroutine (changeChoices());
+	}
+	public void fadeselectCityMenu(){
+		StartCoroutine("selectCityFadeOut");
+		//StartCoroutine (changeChoices());
+	}
+	public void fadeselectDateMenu(){
+		StartCoroutine("selectDateFadeOut");
+		//StartCoroutine (changeChoices());
+	}
 	IEnumerator FadeOutMain(){
 		float time = 1f;
 		while(mainCanvas.alpha > 0){
@@ -102,8 +117,42 @@ public class controlsScript : MonoBehaviour {
 		float time = 1f;
 		while(selectPlaceCanvas.alpha > 0){
 			selectPlaceCanvas.alpha -= 2*(Time.deltaTime / time);
+			selectAnothrePlace.alpha -= 2*(Time.deltaTime / time);
+			SelectDateCanvas.alpha -= 2*(Time.deltaTime / time);
+			SelectHotelCanvas.alpha -= 2*(Time.deltaTime / time);
+			if (selectPlaceCanvas.alpha == 0) {
+				selectPlaceCanvas.gameObject.SetActive (false);
+				selectAnothrePlace.gameObject.SetActive (false);
+				SelectDateCanvas.gameObject.SetActive (false);
+				SelectHotelCanvas.gameObject.SetActive (false);
+			}
+			yield return null;
+		}
+	}
+	IEnumerator selectAnotherPlaceFadeOut(){
+		float time = 1f;
+		while(selectPlaceCanvas.alpha > 0){
+			selectPlaceCanvas.alpha -= 2*(Time.deltaTime / time);
 			if (selectPlaceCanvas.alpha == 0)
 				selectPlaceCanvas.gameObject.SetActive (false);
+			yield return null;
+		}
+	}
+	IEnumerator selectCityFadeOut(){
+		float time = 1f;
+		while(selectAnothrePlace.alpha > 0){
+			selectAnothrePlace.alpha -= 2*(Time.deltaTime / time);
+			if (selectAnothrePlace.alpha == 0)
+				selectAnothrePlace.gameObject.SetActive (false);
+			yield return null;
+		}
+	}
+	IEnumerator selectDateFadeOut(){
+		float time = 1f;
+		while(SelectDateCanvas.alpha > 0){
+			SelectDateCanvas.alpha -= 2*(Time.deltaTime / time);
+			if (SelectDateCanvas.alpha == 0)
+				SelectDateCanvas.gameObject.SetActive (false);
 			yield return null;
 		}
 	}

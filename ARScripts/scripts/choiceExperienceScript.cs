@@ -20,7 +20,7 @@ public class choiceExperienceScript : MonoBehaviour {
 	IEnumerator startExperience(string optionSelected) {
 		while (true) {
 			Debug.Log (optionSelected);
-			string weatherUrl = string.Concat("http://129.158.75.253:5000/experience?lat=40.417031&lng=-3.703570&choice=", optionSelected);
+			string weatherUrl = string.Concat("http://129.158.75.253:5000/experience?lat=40.469943&lng=-3.616984&choice=", optionSelected);
 			WWW weatherWWW = new WWW (weatherUrl);
 
 			yield return weatherWWW;

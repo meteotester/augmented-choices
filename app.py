@@ -35,7 +35,10 @@ def getChoices():
         choicesList = [{'name': 'nightlife', 'text': 'Ajetreo hasta el amanecer'}, {'name':'symbols', 'text': 'Simbolos de la ciudad'}]
     print choicesList
     jsonStr = json.dumps(choicesList)
-    return jsonify(Choices=choicesList)
+    result = '{"Choices":'+json.dumps(choicesList)+'}'
+    
+    print result
+    return result
 
 
 @app.route("/placetoeat")

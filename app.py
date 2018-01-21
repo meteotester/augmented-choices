@@ -139,5 +139,25 @@ def getExperience():
 
     return jsonStr
 
+
+@app.route('/hotels')
+def getHotels():
+    # At the moment profile is not taken into account and criteria is hardcoded
+    # Moreover we are connecting to the sandbox
+
+    headers = {'User-Agent': 'Mozilla/5.0 (iPad; U; CPU OS 3_2_1 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Mobile/7B405'}
+    
+    url = "https://sandbox.hotelscombined.com/api/2.0/hotels/basic?destination=place:Vigo&checkin=2018-03-28&checkout=2018-03-31&rooms=2&apiKey=%s&sessionID=null&onlyIfComplete=False&languageCode=ES&starRating=5&clientIp=10.105.36.18" %( os.environ['API_KEY_HOTELSCOMBINED'])
+    print url
+    r = requests.get(url, headers=headers)
+
+    # Return top 2 choices
+    myjson = r.json()
+    myjson["results"] = myjson["results"][0:2]
+
+    jsonStr = json.dumps(myjson)
+    return jsonStr
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

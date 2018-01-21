@@ -14,6 +14,7 @@ app = Flask(__name__)
 api_key = os.environ['API_KEY_MINUBE']
 
 subcategories = json.load(open('data/subcategories.json'))
+
 subcategories_dict = {x["id"]:x["name"] for x in subcategories}
 
 def selectFields(mydict):
@@ -36,7 +37,7 @@ def getChoices():
     print choicesList
     jsonStr = json.dumps(choicesList)
     result = '{"Choices":'+json.dumps(choicesList)+'}'
-    
+
     print result
     return result
 

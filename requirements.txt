@@ -12,5 +12,6 @@ MarkupSafe==1.0
 ply==3.10
 requests==2.18.4
 six==1.11.0
+Unidecode==1.0.22
 urllib3==1.22
 Werkzeug==0.14.1

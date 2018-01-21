@@ -35,7 +35,7 @@ def getChoices():
         choicesList = [{'name': 'nightlife', 'text': 'Ajetreo hasta el amanecer'}, {'name':'symbols', 'text': 'Simbolos de la ciudad'}]
     print choicesList
     jsonStr = json.dumps(choicesList)
-    return jsonify(jsonStr)
+    return jsonify(Choices=choicesList)
 
 
 @app.route("/placetoeat")
@@ -78,7 +78,7 @@ def getPlacetoeat():
     except Exception ,e:
         print str(e)
 
-    return jsonify(jsonStr)
+    return jsonStr
 
 @app.route("/experience")
 def getExperience():
@@ -133,7 +133,7 @@ def getExperience():
     except Exception ,e:
         print str(e)
 
-    return jsonify(jsonStr)
+    return jsonStr
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
